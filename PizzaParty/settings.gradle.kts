@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Pizza Party"
 include(":app")
+ 
