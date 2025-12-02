@@ -115,7 +115,7 @@ fun PetAppBar(
       colors = TopAppBarDefaults.topAppBarColors(
          containerColor = MaterialTheme.colorScheme.primaryContainer
       ),
-      modifier = modifier
+      modifier = modifier,
               navigationIcon = {
          if (canNavigateBack) {
             IconButton(onClick = onUpClick) {
@@ -128,7 +128,6 @@ fun PetAppBar(
 
 @Composable
 fun ListScreen(
-   petList: List<Pet>,
    onImageClick: (Pet) -> Unit,
    modifier: Modifier = Modifier,
    viewModel: ListViewModel = viewModel()
