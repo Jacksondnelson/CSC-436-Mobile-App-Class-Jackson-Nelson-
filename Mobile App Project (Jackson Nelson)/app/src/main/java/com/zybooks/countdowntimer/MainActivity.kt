@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
@@ -31,34 +32,62 @@ import androidx.work.workDataOf
 import com.zybooks.countdowntimer.ui.TimerScreen
 import com.zybooks.countdowntimer.ui.TimerViewModel
 import com.zybooks.countdowntimer.ui.theme.CountdownTimerTheme
+import com.zybooks.countdowntimer.ui.HomeScreen
+import androidx.navigation.NavType
+import androidx.navigation.compose.*
+import androidx.navigation.navArgument
+import com.zybooks.countdowntimer.ui.*
+import com.zybooks.countdowntimer.ui.DayActivitiesScreen
+import com.zybooks.countdowntimer.ui.DayActivitiesViewModel
+import com.zybooks.countdowntimer.ui.HomeViewModel
 
-
-class MainActivity : ComponentActivity() {
+/*class MainActivity : ComponentActivity() {
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
       setContent {
          CountdownTimerTheme {
             //Call your composable function here
-            MainScreen()
+            HomeScreen()
          }
+      }
+   }
+}*/
+class MainActivity : ComponentActivity() {
+   override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(savedInstanceState)
+      setContent {
+         AppNavHost()
       }
    }
 }
 
 @Composable
-fun MainScreen() {
-   Box(
-      modifier = Modifier.fillMaxSize(),
-      contentAlignment = Alignment.Center
-   ) {
-      Text(
-         text = "App Opened",
-         fontSize = 24.sp,
-         fontWeight = FontWeight.Bold,
-         color = Color.Black
-      )
+fun AppNavHost() {
+   val navController = rememberNavController()
+
+   // ViewModels
+   val homeViewModel: HomeViewModel = viewModel()
+   val dayActivitiesViewModel: DayActivitiesViewModel = viewModel()
+
+   NavHost(navController = navController, startDestination = "home") {
+      composable("home") {
+         HomeScreen(
+            onDayClick = { day ->
+               navController.navigate("dayActivities/$day")
+            }
+         )
+      }
+      composable(
+         route = "dayActivities/{day}",
+         arguments = listOf(navArgument("day") { type = NavType.StringType })
+      ) { backStackEntry ->
+         val day = backStackEntry.arguments?.getString("day") ?: "Unknown"
+         DayActivitiesScreen(day = day)
+      }
    }
 }
+
+
 
 
 /*class MainActivity : ComponentActivity() {
