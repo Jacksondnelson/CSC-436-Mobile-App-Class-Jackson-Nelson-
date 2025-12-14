@@ -70,6 +70,51 @@ fun AppNavHost() {
    val dayActivitiesViewModel: DayActivitiesViewModel = viewModel()
 
    NavHost(navController = navController, startDestination = "home") {
+
+      // Home Screen
+      composable("home") {
+         HomeScreen(
+            onDayClick = { day ->
+               navController.navigate("dayActivities/$day")
+            }
+         )
+      }
+
+      // Day Activities Screen
+      composable(
+         route = "dayActivities/{day}",
+         arguments = listOf(
+            navArgument("day") { type = NavType.StringType }
+         )
+      ) { backStackEntry ->
+         val day = backStackEntry.arguments?.getString("day") ?: "Unknown"
+
+         DayActivitiesScreen(
+            day = day,
+            navController = navController,
+            onGoBack = {
+               navController.popBackStack()   // ⬅️ correct go-back behavior
+            },
+            onAddActivity = {
+               //dayActivitiesViewModel.showAddDialog()
+               // Or whatever your add-activity entry point is
+            },
+            viewModel = dayActivitiesViewModel
+         )
+      }
+   }
+}
+
+
+/*@Composable
+fun AppNavHost() {
+   val navController = rememberNavController()
+
+   // ViewModels
+   val homeViewModel: HomeViewModel = viewModel()
+   val dayActivitiesViewModel: DayActivitiesViewModel = viewModel()
+
+   NavHost(navController = navController, startDestination = "home") {
       composable("home") {
          HomeScreen(
             onDayClick = { day ->
@@ -85,8 +130,9 @@ fun AppNavHost() {
          DayActivitiesScreen(day = day)
       }
    }
-}
+}*/
 
+//write code for
 
 
 

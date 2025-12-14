@@ -9,6 +9,7 @@ data class ScheduledEvent(
     val dayOfWeek: String,
     val taskName: String,
     //change start and end time types if neccesary
-    val startTime: String,
-    val endTime: String
+    val startTimeMillis: Long,
+    val endTimeMillis: Long,
+    val addedTimeMillis: Long = 0L
 )

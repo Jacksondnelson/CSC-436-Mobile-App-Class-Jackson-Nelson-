@@ -202,3 +202,6 @@ fun AnimatedTimeIndicator(
       progress = 0f
    }
 }
+
+//just make so it knows whether you count down to start of activity
+//or when activity is going to end/
